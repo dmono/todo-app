@@ -1,0 +1,21 @@
+{
+  "name": "todo-app",
+  "description": "A todo app using Backbone.js",
+  "main": "",
+  "license": "MIT",
+  "homepage": "https://github.com/dmono/todo-app",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "^3.2.1",
+    "jquery": "^3.2.1",
+    "backbone": "^1.3.3",
+    "handlebars": "^4.0.5"
+  }
+}
