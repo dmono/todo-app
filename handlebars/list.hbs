@@ -1,0 +1,15 @@
+{{#each items}}
+<li>
+  <div class="item" data-id={{id}}>
+    <div class="checkbox" data-id={{id}}></div>
+    <a href="#" class="item_link" data-id={{id}}>
+      <h2>
+        {{title}} - {{group}}
+      </h2>
+    </a>
+  </div>
+  <div class="delete" data-id={{id}}>
+    <img src="images/delete_icon.png" alt="Delete this item" />
+  </div>
+</li>
+{{/each}}

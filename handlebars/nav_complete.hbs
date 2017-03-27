@@ -1,0 +1,10 @@
+<dl data-name="Completed">
+  <dt><h2>Completed</h2></dt><!--
+  --><dd><p class="todo_count circle"></p></dd>
+</dl>
+{{#each items}}
+  <dl data-name="{{name}}">
+    <dt><h3>{{name}}</h3></dt><!--
+    --><dd><p class="todo_count circle">{{count}}</p></dd>
+  </dl>
+{{/each}}

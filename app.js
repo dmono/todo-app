@@ -18,10 +18,13 @@ app.set('view engine', 'pug');
 // install stylus as css rendering engine
 app.use(stylus.middleware({
   src: path.join(__dirname, 'public'),
-  compile: function(str, p) {
-    return stylus(str).set('filename', p).use(nib());
+  compile: function(str, path) { // str represents the stylus
+    return stylus(str).set('filename', path).use(nib());
   },
 }));
+
+// creates a string that's current directory + views "./views"
+app.locals.basedir = path.join(__dirname, 'views');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

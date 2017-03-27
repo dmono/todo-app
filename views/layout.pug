@@ -1,0 +1,33 @@
+include /_mixins
+
+doctype html
+html
+  head
+    title= title
+    +stylesheet_link_tag('todos')
+    +javascript_include_tag('vendor/all')
+    +javascript_include_tag('handlebars_templates')
+
+  body
+    #nav_toggle
+
+    nav
+      #all_todos
+      #completed_todos
+
+    main
+      block content
+
+    +javascript_include_tag('application')
+    +javascript_include_tag('models/todo')
+    +javascript_include_tag('collections/todos')
+    +javascript_include_tag('views/todos')
+    script(type='text/javascript').
+      App.todos = new Todos(!{JSON.stringify(todos)});
+      App.init();
+
+    block scripts
+
+
+
+

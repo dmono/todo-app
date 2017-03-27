@@ -1,0 +1,265 @@
+@import 'whitespace-reset.css'
+
+html, body
+  height: 100%
+
+body
+  padding-right: 130px
+  font: normal 16px Helvetica, Arial, sans-serif
+  letter-spacing: 0.05em
+  color: #050505
+  background: #ffffff
+
+a
+  text-decoration: none
+  color: inherit
+  cursor: pointer
+
+#nav_toggle
+  display: none
+  position: absolute
+  top: 30px
+  left: 30px
+  cursor: pointer
+  display: block
+  width: 23px
+  height: 18px
+  background: transparent url('../images/hamburger_menu.png') 0 0 no-repeat
+  
+nav
+  float: left
+  width: 335px
+  min-height: 100%
+  padding: 60px 0 0 0
+  background: #464f77
+  box-sizing: border-box
+  .show
+    display: block
+  h2, h3
+    display: inline-block
+    font-weight: normal
+  h2
+    font-size: 18px
+    color: #ffffff
+    &:before
+      display: inline-block
+      margin: 0 10px 0 -36px
+      vertical-align: -5px
+  h3
+    color: #b2b5c3
+  dt, dd
+    display: inline-block
+    padding-top: 11px
+    padding-bottom: 11px
+    vertical-align: middle
+    box-sizing: border-box
+    &:hover
+      cursor: pointer 
+  dt
+    width: 85%
+    padding-left: 136px
+  dd
+    width: 15%
+    padding-right: 30px
+  .todo_count
+    float: right
+  li
+    padding: 11px 32px 11px 137px
+    
+#all_todos
+  margin_bottom: 41px
+  h2
+    &:before
+      content: url('../images/nav_todos_icon.png')
+  li
+    &:first-of-type
+      padding-bottom: 8px
+      .todo_count
+        margin-top: 5px
+
+#completed_todos
+  h2
+    &:before
+      content: url('../images/nav_completed_icon.png')
+  h3
+    text-decoration: line-through
+    
+.selected_list
+  background: #383f5f
+  h3
+    color: #ffffff
+  .todo_count
+    background: #148fd5
+  
+.todo_count
+  display: inline-block
+  height: 16px
+  padding: 1px 5px
+  font-size: 14px
+  color: #ffffff
+  text-align: center
+  background: #6b7292
+  border-radius: 50%
+  
+main
+  overflow: hidden
+  max-width: 745px
+  padding: 73px 20px 0 20px
+
+section
+  h1
+    display: inline-block
+    font-weight: inherit
+    font-size: 21px
+    padding: 0 12px 22px 12px
+  h2
+    font-weight: inherit
+  .todo_count
+    background: #148fd5
+    vertical-align: 2px
+  li
+    width: 100%
+    border-top: 1px solid #e7e7e7
+    &:after
+      display: block
+      content: ""
+      clear: both
+      height: 0
+    a
+      display: inline-block
+      &:hover
+        color: #3992ff
+        
+.add_new
+  display: block
+  padding-left: 26px
+  margin: 16px 0 13px 12px
+  background: transparent url("../images/add_icon.png") 0 1px no-repeat
+  color: #148fd5 
+
+.item
+  float: left
+  width: 95%
+  padding: 16px 0 13px 12px
+  box-sizing: border-box
+  cursor: pointer
+  &:hover
+    background: #d7e4f4
+
+.delete
+  float: right
+  width: 5%
+  padding: 14px 0 12px 11px
+  box-sizing: border-box
+  cursor: pointer
+  &:hover
+    background: #ffa1a1
+    
+.checkbox
+  display: inline-block
+  width: 15px
+  height: 15px
+  margin-right: 10px
+  vertical-align: middle
+  background: url('../images/unchecked_icon.png') 0 0 no-repeat
+  cursor: pointer
+
+.checkbox.checked
+  background: url('../images/checked_icon.png') 0 0 no-repeat
+
+.completed
+  color: #b3b3b3
+  text-decoration: line-through
+  
+#modal
+  display: none
+  position: absolute
+  top: 107px
+  left: 440px
+  form
+    position: relative
+    width: 575px
+    height: 400px
+    padding: 37px 35px 39px 30px
+    box-sizing: border-box
+    z-index: 2
+    background: #ffffff
+  dt, dd
+    display: inline-block
+    padding-bottom: 24px
+    vertical-align: top
+  dt
+    width: 105px
+  dd
+    &:last-of-type
+      padding-bottom: 19px
+  label
+    display: inline-block
+    margin-top: 10px
+  select
+    &:first-of-type
+      margin-left: 0 
+    &:last-of-type
+      margin-right: 0
+  input[type="submit"]
+    &:first-of-type
+      margin-left: 110px
+
+.modal_overlay
+  display: none
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1
+  content: ""
+  background: rgba(0, 0, 0, .2)
+
+input[type="text"], select, textarea
+  width: 396px
+  height: 36px
+  padding: 11px 8px 9px 8px
+  font: normal 16px Helvetica, Arial, sans-serif
+  letter-spacing: 0.05em
+  color: #070707
+  border: 1px solid #b3b3b3
+  box-sizing: border-box
+
+select
+  width: 116px
+  margin: 0 4px
+
+textarea
+  height: 144px
+  resize: none
+
+.button
+  width: 186px
+  height: 38px
+  margin-right: 10px
+  font: normal 16px Helvetica, Arial, sans-serif
+  letter-spacing: 0.05em
+  color: #ffffff
+  background: #148fd5
+  border: none
+  border-radius: 4px
+  box-sizing: border-box
+  cursor: pointer
+
+a.button
+  display: inline-block
+  padding-top: 10px
+  vertical-align: top
+  text-align: center
+  &:hover
+    color: #ffffff
+
+@media (max-width: 768px)
+  nav
+    display: none
+  .open_nav
+    left: 365px !important
+  #modal
+    left: 75px
+  
