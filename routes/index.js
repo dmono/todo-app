@@ -4,10 +4,8 @@ var path = require('path');
 var Todos = require(path.resolve(path.dirname(__dirname), 'modules/todos.js'));
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index',{
-    todos: Todos.get(),
-  });
+router.get('/', function(req, res) {
+  res.render('index');
 });
 
 module.exports = router;

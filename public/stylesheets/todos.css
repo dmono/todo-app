@@ -194,13 +194,13 @@ section li a:hover {
   color: #b3b3b3;
   text-decoration: line-through;
 }
-#modal {
+#modal_form {
   display: none;
   position: absolute;
   top: 107px;
   left: 440px;
 }
-#modal form {
+#modal_form form {
   position: relative;
   width: 575px;
   height: 400px;
@@ -209,29 +209,29 @@ section li a:hover {
   z-index: 2;
   background: #fff;
 }
-#modal dt,
-#modal dd {
+#modal_form dt,
+#modal_form dd {
   display: inline-block;
   padding-bottom: 24px;
   vertical-align: top;
 }
-#modal dt {
+#modal_form dt {
   width: 105px;
 }
-#modal dd:last-of-type {
+#modal_form dd:last-of-type {
   padding-bottom: 19px;
 }
-#modal label {
+#modal_form label {
   display: inline-block;
   margin-top: 10px;
 }
-#modal select:first-of-type {
+#modal_form select:first-of-type {
   margin-left: 0;
 }
-#modal select:last-of-type {
+#modal_form select:last-of-type {
   margin-right: 0;
 }
-#modal input[type="submit"]:first-of-type {
+#modal_form input[type="submit"]:first-of-type {
   margin-left: 110px;
 }
 .modal_overlay {

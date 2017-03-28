@@ -18,6 +18,7 @@ var Todos = Backbone.Collection.extend({
   },
   updateStorage: function() {
     localStorage.setItem('todos', JSON.stringify(this.toJSON()));
+    this.trigger('list_updated');
   },
   findGroups: function(list) {
     var dateList = list.map(function(item) {

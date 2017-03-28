@@ -1,10 +1,21 @@
 var App = {
   templates: JST,
+  indexView: function() {
+    this.index = new IndexView();
+  },
   getTodos: function() {
     return JSON.parse(localStorage.getItem("todos"));
   },
   updateTodos: function() {
     this.todos.reset(this.getTodos());
+  },
+  toggleDone: function(e) {
+    var id = +$(e.target).attr('data-id');
+    var status = this.todos.get(id).get('completed');
+    this.todos.get(id).set('completed', !status);
+    this.todos.updateStorage();
+    this.todos.sort();
+    this.renderList(this.selectedGroup);
   },
   selectList: function(e) {
     e.preventDefault();
@@ -20,12 +31,12 @@ var App = {
   },
   formatCompletedTodos: function(todos) {
     todos.forEach(function(item) {
-      console.log(item.id);
       $("div.checkbox").closest("[data-id='" + item.id + "']").addClass("checked");
       $("a.item_link").closest("[data-id='" + item.id + "']").addClass("completed");
     });
   },
   renderList: function(group) { // refactor this?
+    this.selectedGroup = group;
     var listCount = this.todos.length;
     var partialList;
     var completed = $('section').attr('data-status');
@@ -53,8 +64,21 @@ var App = {
     this.formatCompletedTodos(this.todos.getCompleted());
     $("section p.todo_count").text(listCount);
   },
+  newTodo: function() {
+    this.addModal = new addTodoView();
+  },
+  closeTodo: function(e) {
+    if (this.addModal) {
+      this.addModal.close(e);
+    }
+  },
   bindEvents: function() {
+    _.extend(this, Backbone.Events);
     $('nav').on('click', 'dl', this.selectList.bind(this));
+    // $("#modal form").on("click", "a.button", this.markComplete.bind(this));
+    $("section").on("click", "div.item", this.toggleDone.bind(this));
+    $('main').on('click', 'div.modal_overlay', this.closeTodo.bind(this));
+    // this.listenTo(this.index, 'add_todo', this.newTodo);
   },
   init: function() {
     this.todos = new Todos(this.getTodos());

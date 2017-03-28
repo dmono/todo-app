@@ -39,6 +39,6 @@ var NavView = Backbone.View.extend({
   },
   initialize: function() {
     this.render();
-    this.listenTo(this.collection, 'list_selected', this.render);
+    this.listenTo(this.collection, 'list_updated', this.render);
   },
 });
