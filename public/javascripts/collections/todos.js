@@ -18,7 +18,11 @@ var Todos = Backbone.Collection.extend({
   },
   updateStorage: function() {
     localStorage.setItem('todos', JSON.stringify(this.toJSON()));
+    localStorage.setItem('lastId', this.lastId);
     this.trigger('list_updated');
+  },
+  nextId: function() {
+    return ++this.lastId;
   },
   findGroups: function(list) {
     var dateList = list.map(function(item) {
@@ -48,5 +52,14 @@ var Todos = Backbone.Collection.extend({
     }
 
     return sortedGroup;  
+  },
+  initialize: function() {
+    if (!localStorage.getItem('todos')) {
+      this.lastId = 0;
+      localStorage.setItem('todos', '[]');
+      localStorage.setItem('lastId', 0);
+    } else {
+      this.lastId = +localStorage.getItem('lastId');
+    }
   },
 });

@@ -1,6 +1,6 @@
 var $overlay = $('.modal_overlay');
 
-var addTodoView = Backbone.View.extend({
+var editTodoView = Backbone.View.extend({
   attributes: {
     id: 'modal_form',
   },
@@ -28,25 +28,8 @@ var addTodoView = Backbone.View.extend({
     if (data.month === 'Month') { data.month = null }
     if (data.year === 'Year') { data.year = null }
   },
-  create: function(e) {
-    e.preventDefault();
-    var $form = this.$('form');
-    var data = {};
-    var newTodo;
+  edit: function(e) {
 
-    $form.serializeArray().forEach(function(field) {
-      data[field.name] = field.value;
-    });
-    console.log($form.serializeArray());
-
-    newTodo = new Todo(this.cleanEmptyDates(data));
-    newTodo.set('completed', false).set('id', App.todos.nextId());
-    App.todos.add(newTodo);
-
-    App.todos.updateStorage();
-    App.updateListView();
-
-    this.close(e);
   },
   render: function() {
     this.$el.html(this.template);

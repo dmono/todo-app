@@ -13,9 +13,15 @@ var App = {
     var id = +$(e.target).attr('data-id');
     var status = this.todos.get(id).get('completed');
     this.todos.get(id).set('completed', !status);
-    this.todos.updateStorage();
-    this.todos.sort();
-    this.renderList(this.selectedGroup);
+  },
+  deleteTodo: function(e) {
+    e.preventDefault();
+    var id = +$(e.target).closest('div').attr('data-id');
+    console.log(e.target);
+
+    if (confirm("Are you sure you want to delete this todo?")) {
+      this.todos.remove(this.todos.findWhere({ id: id }));
+    }
   },
   selectList: function(e) {
     e.preventDefault();
@@ -64,8 +70,16 @@ var App = {
     this.formatCompletedTodos(this.todos.getCompleted());
     $("section p.todo_count").text(listCount);
   },
+  updateListView: function() {
+    this.todos.updateStorage();
+    this.todos.sort();
+    this.renderList(this.selectedGroup);
+  },
   newTodo: function() {
     this.addModal = new addTodoView();
+  },
+  editTodo: function() {
+    this.editModal = new editTodoView();
   },
   closeTodo: function(e) {
     if (this.addModal) {
@@ -78,6 +92,9 @@ var App = {
     // $("#modal form").on("click", "a.button", this.markComplete.bind(this));
     $("section").on("click", "div.item", this.toggleDone.bind(this));
     $('main').on('click', 'div.modal_overlay', this.closeTodo.bind(this));
+    $("section > ul").on("click", "div.delete", this.deleteTodo.bind(this));
+    this.listenTo(this.todos, 'change', this.updateListView.bind(this));
+    this.listenTo(this.todos, 'update', this.updateListView.bind(this));
     // this.listenTo(this.index, 'add_todo', this.newTodo);
   },
   init: function() {
