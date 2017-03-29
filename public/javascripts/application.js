@@ -17,7 +17,6 @@ var App = {
   deleteTodo: function(e) {
     e.preventDefault();
     var id = +$(e.target).closest('div').attr('data-id');
-    console.log(e.target);
 
     if (confirm("Are you sure you want to delete this todo?")) {
       this.todos.remove(this.todos.findWhere({ id: id }));
@@ -76,26 +75,31 @@ var App = {
     this.renderList(this.selectedGroup);
   },
   newTodo: function() {
-    this.addModal = new addTodoView();
+    this.modal = new ModalView();
+    this.modal.renderAdd();
   },
-  editTodo: function() {
-    this.editModal = new editTodoView();
+  editTodo: function(id) {
+    this.modal = new ModalView();
+    this.modal.renderEdit(id);
+  },
+  editLink: function(e) {
+    e.stopPropagation();
   },
   closeTodo: function(e) {
-    if (this.addModal) {
-      this.addModal.close(e);
+    if (this.modal) {
+      this.modal.close(e);
     }
   },
   bindEvents: function() {
     _.extend(this, Backbone.Events);
     $('nav').on('click', 'dl', this.selectList.bind(this));
     // $("#modal form").on("click", "a.button", this.markComplete.bind(this));
+    // $("section > ul").on("click", "a.item_link", this.editLink);
     $("section").on("click", "div.item", this.toggleDone.bind(this));
     $('main').on('click', 'div.modal_overlay', this.closeTodo.bind(this));
     $("section > ul").on("click", "div.delete", this.deleteTodo.bind(this));
     this.listenTo(this.todos, 'change', this.updateListView.bind(this));
     this.listenTo(this.todos, 'update', this.updateListView.bind(this));
-    // this.listenTo(this.index, 'add_todo', this.newTodo);
   },
   init: function() {
     this.todos = new Todos(this.getTodos());
