@@ -15,7 +15,6 @@ var ModalView = Backbone.View.extend({
   },
   close: function() {
     this.fadeOut();
-    history.back();
   },
   fadeOut: function() {
     $overlay.fadeOut(this.duration);

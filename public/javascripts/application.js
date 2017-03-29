@@ -1,8 +1,5 @@
 var App = {
   templates: JST,
-  indexView: function() {
-    this.index = new IndexView();
-  },
   getTodos: function() {
     return JSON.parse(localStorage.getItem("todos"));
   },
@@ -78,12 +75,13 @@ var App = {
     this.modal = new ModalView();
     this.modal.renderAdd();
   },
-  editTodo: function(id) {
+  editTodo: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var id = $(e.target).closest('a').attr('data-id');
+
     this.modal = new ModalView();
     this.modal.renderEdit(id);
-  },
-  editLink: function(e) {
-    e.stopPropagation();
   },
   closeTodo: function(e) {
     if (this.modal) {
@@ -93,8 +91,8 @@ var App = {
   bindEvents: function() {
     _.extend(this, Backbone.Events);
     $('nav').on('click', 'dl', this.selectList.bind(this));
-    // $("#modal form").on("click", "a.button", this.markComplete.bind(this));
-    // $("section > ul").on("click", "a.item_link", this.editLink);
+    $("section > a").on("click", this.newTodo.bind(this));
+    $("section > ul").on("click", "a.item_link", this.editTodo.bind(this));
     $("section").on("click", "div.item", this.toggleDone.bind(this));
     $('main').on('click', 'div.modal_overlay', this.closeTodo.bind(this));
     $("section > ul").on("click", "div.delete", this.deleteTodo.bind(this));
