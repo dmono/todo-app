@@ -1,5 +1,6 @@
 var App = {
   templates: JST,
+  $el: $('main ul'),
   getTodos: function() {
     return JSON.parse(localStorage.getItem("todos"));
   },
@@ -19,59 +20,38 @@ var App = {
       this.todos.remove(this.todos.findWhere({ id: id }));
     }
   },
-  selectList: function(e) {
-    e.preventDefault();
-    var group = $(e.target).closest('dl').attr('data-name');
-    $('section').attr('data-name', group).attr('data-status', status);
-
-    if ($(e.target).closest("div").attr("id") === "completed_todos") {
-      $("section").attr("data-status", "completed");
-    }
-
-    this.navView.render();
-    this.renderList(group);
-  },
-  formatCompletedTodos: function(todos) {
-    todos.forEach(function(item) {
-      $("div.checkbox").closest("[data-id='" + item.id + "']").addClass("checked");
-      $("a.item_link").closest("[data-id='" + item.id + "']").addClass("completed");
-    });
-  },
-  renderList: function(group) { // refactor this?
+  renderTodos: function(group, status) {
     this.selectedGroup = group;
-    var listCount = this.todos.length;
-    var partialList;
-    var completed = $('section').attr('data-status');
+    var collection;
+  
+    this.$el.html('');
 
     if (group === 'All Todos') {
-      new TodosView({ collection: this.todos });
+      collection = this.todos;
+    } else if (group === 'Completed') {
+      collection = this.todos.getCompleted();
     } else {
-      if (group === 'Completed') {
-        partialList = new Todos(this.todos.where({ completed: true }));
-      } else {
-        if (completed) {
-          partialList = new Todos(this.todos.where({
-          completed: true,
-          group: group,
-        }));
-        } else {
-          partialList = new Todos(this.todos.where({ group: group }));
-        }
-      }
-      new TodosView({ collection: partialList });
-      listCount = partialList.length;
+      collection = this.todos.filterByGroupStatus(group, status);
     }
 
+    collection.each(this.renderTodoView);
+
     $("section > h1").text(group);
-    this.formatCompletedTodos(this.todos.getCompleted());
-    $("section p.todo_count").text(listCount);
+    $("section p.todo_count").text(collection.length);
   },
+  renderTodoView: function(todo) {
+    new TodoView({
+      model: todo,
+    });
+  }, 
   updateListView: function() {
+    console.log('deleted!');
     this.todos.updateStorage();
     this.todos.sort();
-    this.renderList(this.selectedGroup);
+    // this.renderList(this.selectedGroup);
   },
-  newTodo: function() {
+  newTodo: function(e) {
+    e.preventDefault();
     this.modal = new ModalView();
     this.modal.renderAdd();
   },
@@ -83,26 +63,28 @@ var App = {
     this.modal = new ModalView();
     this.modal.renderEdit(id);
   },
-  closeTodo: function(e) {
+  closeModal: function(e) {
     if (this.modal) {
       this.modal.close(e);
     }
   },
   bindEvents: function() {
     _.extend(this, Backbone.Events);
-    $('nav').on('click', 'dl', this.selectList.bind(this));
+    // $('nav').on('click', 'dl', this.selectList.bind(this));
     $("section > a").on("click", this.newTodo.bind(this));
     $("section > ul").on("click", "a.item_link", this.editTodo.bind(this));
     $("section").on("click", "div.item", this.toggleDone.bind(this));
-    $('main').on('click', 'div.modal_overlay', this.closeTodo.bind(this));
+    $('main').on('click', 'div.modal_overlay', this.closeModal.bind(this));
     $("section > ul").on("click", "div.delete", this.deleteTodo.bind(this));
-    this.listenTo(this.todos, 'change', this.updateListView.bind(this));
-    this.listenTo(this.todos, 'update', this.updateListView.bind(this));
+
+    this.on('list_selected', this.renderTodos.bind(this));
   },
   init: function() {
     this.todos = new Todos(this.getTodos());
-    this.renderList('All Todos');
-    this.navView = new NavView({ collection: this.todos });
     this.bindEvents();
+    this.renderTodos('All Todos');
+
+    this.navView = new NavView({ collection: this.todos });
+    
   }
-}
+};

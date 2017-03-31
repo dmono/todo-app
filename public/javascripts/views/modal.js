@@ -51,6 +51,7 @@ var ModalView = Backbone.View.extend({
 
     App.todos.add(newTodo);
 
+    // trigger a render on app
     App.todos.updateStorage();
     App.updateListView();
 

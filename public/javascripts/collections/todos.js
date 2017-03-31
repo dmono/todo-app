@@ -2,16 +2,20 @@ var Todos = Backbone.Collection.extend({
   model: Todo,
   comparator: 'completed',
   getCompleted: function() {
-    // find better way to turn array of models into an array of objects
-    var done = App.todos.where({ completed: true });
-    done = _.map(done, function(m) {
-      return m.toJSON();
-    });
-
-    return done;
+    return new Todos(this.where({ completed: true, }));
   },
-  filterTodos: function(list, group) {
-    return _.where(list, { group: group });
+  filterByGroup: function(group) {
+    return new Todos(this.where({ group: group }));
+  },
+  filterByGroupStatus: function(group, status) {
+    if (!status) {
+      return this.filterByGroup(group);
+    } else {
+      return new Todos(this.where({
+        group: group,
+        completed: true,
+      }));
+    }
   },
   readStorage: function() {
     return JSON.parse(localStorage.getItem("todos"));
@@ -24,14 +28,17 @@ var Todos = Backbone.Collection.extend({
   nextId: function() {
     return ++this.lastId;
   },
-  findGroups: function(list) {
-    var dateList = list.map(function(item) {
-      return item.group;
-    }).filter(function(date, index, dateArray) {
-      return dateArray.indexOf(date) === index;
-    });
-  
-    return this.sortGroupsByDate(dateList);
+  findGroups: function(completed) {
+    var groups;
+    var existing = App.todos.clone();
+
+    if (completed) {
+      groups = _.uniq(existing.getCompleted().pluck('group'));
+    } else {
+      groups = _.uniq(this.pluck('group'));
+    }
+
+    return this.sortGroupsByDate(groups);
   },
   sortGroupsByDate: function(groups) {
     var idx;

@@ -1,9 +1,9 @@
-<dl data-name="Completed">
+<dl data-name="Completed" data-status="completed">
   <dt><h2>Completed</h2></dt><!--
   --><dd><p class="todo_count circle"></p></dd>
 </dl>
 {{#each items}}
-  <dl data-name="{{name}}">
+  <dl data-name="{{name}}" data-status="completed">
     <dt><h3>{{name}}</h3></dt><!--
     --><dd><p class="todo_count circle">{{count}}</p></dd>
   </dl>
