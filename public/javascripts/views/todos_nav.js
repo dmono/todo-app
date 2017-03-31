@@ -4,13 +4,9 @@ var NavView = Backbone.View.extend({
     'click dl': 'selectList'
   },
   selectList: function(e) {
-    var selectedGroup = $(e.currentTarget).attr('data-name');
-    var status = $(e.currentTarget).attr('data-status'); 
-
-    this.$el.find('dl').removeClass();
-    $(e.currentTarget).addClass('selected_list');
-
-    App.trigger('list_selected', selectedGroup, status);
+    App.selectedGroup = $(e.currentTarget).attr('data-name');
+    App.selectedStatus = $(e.currentTarget).attr('data-status'); 
+    App.updateViews();
   },
   navCategories: function(completed) {
     var groups = App.todos.findGroups(completed);
@@ -20,23 +16,21 @@ var NavView = Backbone.View.extend({
     groups.forEach(function(group) {
       categories.push({
         name: group,
-        count: App.todos.filterByGroup(group).length,
+        count: App.todos.filterByGroupStatus(group, completed).length,
       });
     });
 
     return categories;
   },
-  // highlightNav: function() {
-  //   var status = $("section").attr("data-status");
-  //   var statusDiv = status ? "#completed_todos" : "#all_todos";
-  //   var name = $("section").attr("data-name");
+  highlightNav: function() {
+    var statusDiv = App.selectedStatus ? "#completed_todos" : "#all_todos";
 
-  //   $("nav dl").removeClass();
+    this.$el.find('dl').removeClass();
 
-  //   $(statusDiv + " dl").filter(function() {
-  //     return $(this).attr("data-name") === name;
-  //   }).addClass("selected_list");
-  // },
+    $(statusDiv + " dl").filter(function() {
+      return $(this).attr("data-name") === App.selectedGroup;
+    }).addClass("selected_list");
+  },
   render: function() {
     var allTodos = this.navCategories();
     var completedTodos = this.navCategories(true);
@@ -47,10 +41,9 @@ var NavView = Backbone.View.extend({
     $("#all_todos p").eq(0).text(this.collection.length);
     $("#completed_todos p").eq(0).text(this.collection.getCompleted().length);
 
-    // this.highlightNav();
+    this.highlightNav();
   },
   initialize: function() {
     this.render();
-    // this.listenTo(this.collection, 'list_updated', this.render);
   },
 });

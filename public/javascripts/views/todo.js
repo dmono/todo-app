@@ -6,20 +6,30 @@ var TodoView = Backbone.View.extend({
     'click div.delete': 'deleteTodo',
     'click a.item_link': 'editTodo',
   },
-  toggleDone: function() {
-
+  toggleDone: function(e) {
+    e.preventDefault();
+    this.model.set('completed', !this.model.get('completed'));
+    App.trigger('todo_updated');
   },
-  deleteTodo: function() {
+  deleteTodo: function(e) {
+    e.preventDefault();
 
+    if (confirm("Are you sure you want to delete this todo?")) {
+      App.todos.remove(this.model);
+    }
   },
-  editTodo: function() {
+  editTodo: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
+    App.modal = new ModalView();
+    App.modal.renderEdit(this.model);
   },
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
 
     if (this.model.get('completed')) {
-      this.$el.find('.checkout').addClass('checked');
+      this.$el.find('.checkbox').addClass('checked');
       this.$el.find('a').addClass('completed');
     }
 
@@ -27,8 +37,6 @@ var TodoView = Backbone.View.extend({
   },
   initialize: function() {
     this.render();
-    this.listenTo(this.model, 'change', this.render);
-    // need to render list again as well
   },
 
 });

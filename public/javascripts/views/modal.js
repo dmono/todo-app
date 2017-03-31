@@ -49,33 +49,27 @@ var ModalView = Backbone.View.extend({
     newTodo = new Todo(this.cleanEmptyDates(data));
     newTodo.set('completed', false).set('id', App.todos.nextId()).set('group', newTodo.setGroup());
 
+    App.selectedGroup = 'All Todos';
     App.todos.add(newTodo);
-
-    // trigger a render on app
-    App.todos.updateStorage();
-    App.updateListView();
-
     this.close();
   },
   edit: function() {
     var $form = this.$('form');
     var todo = App.todos.findWhere({ id: this.todoId });
-    var data = $form.serializeArray();
+    var data = {};
 
     $form.serializeArray().forEach(function(field) {
       data[field.name] = field.value;
     });
 
     todo.set(this.cleanEmptyDates(data)).set('group', todo.setGroup());
-    App.todos.updateStorage();
-    App.updateListView();
-
     this.close();
+    App.trigger('todo_updated');
   },
-  populateFields: function(id) {
-    var item = App.todos.findWhere({ id: +id }).toJSON();
+  populateFields: function(todo) {
+    var item = todo.toJSON();
     var $fields = $("input[type='text'], select, textarea");
-    this.todoId = +id;
+    this.todoId = todo.get('id');
 
     $($fields[0]).val(item.title);
 
@@ -96,19 +90,16 @@ var ModalView = Backbone.View.extend({
 
     todo = App.todos.findWhere({ id: this.todoId });
     todo.set({ 'completed': true });
-
-    App.todos.updateStorage();
-    App.updateListView();
-
+    App.trigger('todo_updated');
     this.close();
   },
   renderAdd: function() {
     this.$el.html(this.template);
     this.open();
   },
-  renderEdit: function(id) {
+  renderEdit: function(todo) {
     this.$el.html(this.template);
-    this.populateFields(id);
+    this.populateFields(todo);
     this.open();
   },
   initialize: function() {

@@ -17,23 +17,18 @@ var Todos = Backbone.Collection.extend({
       }));
     }
   },
-  readStorage: function() {
-    return JSON.parse(localStorage.getItem("todos"));
-  },
   updateStorage: function() {
-    localStorage.setItem('todos', JSON.stringify(this.toJSON()));
+    localStorage.setItem('todos', JSON.stringify(App.todos.toJSON()));
     localStorage.setItem('lastId', this.lastId);
-    this.trigger('list_updated');
   },
   nextId: function() {
     return ++this.lastId;
   },
   findGroups: function(completed) {
     var groups;
-    var existing = App.todos.clone();
 
     if (completed) {
-      groups = _.uniq(existing.getCompleted().pluck('group'));
+      groups = _.uniq(this.getCompleted().pluck('group'));
     } else {
       groups = _.uniq(this.pluck('group'));
     }

@@ -39,7 +39,7 @@ this["JST"]["nav_all"] = Handlebars.template({"1":function(container,depth0,help
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<dl data-name=\"All Todos\" class=\"selected_list\"><dt><h2>All Todos</h2></dt><!----><dd><p class=\"todo_count circle\"></p></dd></dl>"
+  return "<dl data-name=\"All Todos\"><dt><h2>All Todos</h2></dt><!----><dd><p class=\"todo_count circle\"></p></dd></dl>"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.items : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
 
