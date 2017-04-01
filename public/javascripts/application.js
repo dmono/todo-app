@@ -1,8 +1,12 @@
 var App = {
   templates: JST,
   $el: $('main ul'),
-  getTodos: function() {
-    return JSON.parse(localStorage.getItem("todos"));
+  readStorage: function() {
+    return JSON.parse(localStorage.getItem('todos')) || [];
+  },
+  updateStorage: function() {
+    localStorage.setItem('todos', JSON.stringify(this.todos.toJSON()));
+    localStorage.setItem('lastId', this.lastId);
   },
   renderTodos: function() {
     var collection;
@@ -20,8 +24,8 @@ var App = {
     collection.sort();
     collection.each(this.renderTodoView);
 
-    $("section > h1").text(this.selectedGroup);
-    $("section p.todo_count").text(collection.length);
+    $('section > h1').text(this.selectedGroup);
+    $('section p.todo_count').text(collection.length);
   },
   renderTodoView: function(todo) {
     new TodoView({
@@ -29,7 +33,6 @@ var App = {
     });
   },
   updateViews: function() {
-    this.todos.updateStorage();
     this.renderTodos();
     this.navView.render();
   },
@@ -46,19 +49,21 @@ var App = {
   toggleNav: function(e) {
     e.preventDefault();
 
-    $("#nav_toggle").toggleClass("open_nav");
-    $("nav").toggleClass("show");
+    $('#nav_toggle').toggleClass('open_nav');
+    $('nav').toggleClass('show');
   },
   bindEvents: function() {
     _.extend(this, Backbone.Events);
-    $("section > a").on("click", this.newTodo.bind(this));
+    $('section > a').on('click', this.newTodo.bind(this));
     $('main').on('click', 'div.modal_overlay', this.closeModal.bind(this));
-    $("#nav_toggle").on("click", this.toggleNav);
+    $('#nav_toggle').on('click', this.toggleNav);
     this.listenTo(this.todos, 'update', this.updateViews.bind(this));
     this.on('todo_updated', this.updateViews.bind(this));
+    $(window).on('unload', this.updateStorage.bind(this));
   },
   init: function() {
-    this.todos = new Todos(this.getTodos());
+    this.lastId = localStorage.getItem('lastId') || 0;
+    this.todos = new Todos(this.readStorage());
     this.bindEvents();
     this.selectedGroup = 'All Todos';
     this.renderTodos(this.selectedGroup);

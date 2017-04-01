@@ -17,12 +17,8 @@ var Todos = Backbone.Collection.extend({
       }));
     }
   },
-  updateStorage: function() {
-    localStorage.setItem('todos', JSON.stringify(App.todos.toJSON()));
-    localStorage.setItem('lastId', this.lastId);
-  },
   nextId: function() {
-    return ++this.lastId;
+    return ++App.lastId;
   },
   findGroups: function(completed) {
     var groups;
@@ -54,14 +50,5 @@ var Todos = Backbone.Collection.extend({
     }
 
     return sortedGroup;  
-  },
-  initialize: function() {
-    if (!localStorage.getItem('todos')) {
-      this.lastId = 0;
-      localStorage.setItem('todos', '[]');
-      localStorage.setItem('lastId', 0);
-    } else {
-      this.lastId = +localStorage.getItem('lastId');
-    }
   },
 });
