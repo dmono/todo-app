@@ -39,7 +39,7 @@ var App = {
   newTodo: function(e) {
     e.preventDefault();
     this.modal = new ModalView();
-    this.modal.renderAdd();
+    this.modal.render();
   },
   closeModal: function() {
     if (this.modal) {

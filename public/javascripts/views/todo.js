@@ -23,7 +23,7 @@ var TodoView = Backbone.View.extend({
     e.stopPropagation();
 
     App.modal = new ModalView();
-    App.modal.renderEdit(this.model);
+    App.modal.render(this.model);
   },
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));

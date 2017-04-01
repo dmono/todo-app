@@ -93,13 +93,13 @@ var ModalView = Backbone.View.extend({
     App.trigger('todo_updated');
     this.close();
   },
-  renderAdd: function() {
+  render: function(todo) {
     this.$el.html(this.template);
-    this.open();
-  },
-  renderEdit: function(todo) {
-    this.$el.html(this.template);
-    this.populateFields(todo);
+
+    if (todo) {
+      this.populateFields(todo);
+    }
+
     this.open();
   },
   initialize: function() {
