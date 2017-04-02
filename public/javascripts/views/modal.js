@@ -68,16 +68,16 @@ var ModalView = Backbone.View.extend({
   },
   populateFields: function(todo) {
     var item = todo.toJSON();
-    var $fields = $("input[type='text'], select, textarea");
+    var $fields = this.$("input[type='text'], select, textarea");
     this.todoId = todo.get('id');
 
-    $($fields[0]).val(item.title);
+    $($fields.filter("[name='title']")).val(item.title);
 
-    if (item.day) { $($fields[1]).val(item.day) };
-    if (item.month) { $($fields[2]).val(item.month) };
-    if (item.year) { $($fields[3]).val(item.year) };
+    if (item.day) { $($fields.filter("[name='day']")).val(item.day) };
+    if (item.month) { $($fields.filter("[name='month']")).val(item.month) };
+    if (item.year) { $($fields.filter("[name='year']")).val(item.year) };
     
-    $($fields[4]).val(item.description);
+    $($fields.filter("[name='description']")).val(item.description);
   },
   markComplete: function(e) {
     e.preventDefault();

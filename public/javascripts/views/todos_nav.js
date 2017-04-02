@@ -11,7 +11,6 @@ var NavView = Backbone.View.extend({
   navCategories: function(completed) {
     var groups = App.todos.findGroups(completed);
     var categories = [];
-    var self = this;
 
     groups.forEach(function(group) {
       categories.push({
@@ -25,7 +24,7 @@ var NavView = Backbone.View.extend({
   highlightNav: function() {
     var statusDiv = App.selectedStatus ? "#completed_todos" : "#all_todos";
 
-    this.$el.find('dl').removeClass();
+    this.$('dl').removeClass();
 
     $(statusDiv + " dl").filter(function() {
       return $(this).attr("data-name") === App.selectedGroup;
@@ -35,8 +34,8 @@ var NavView = Backbone.View.extend({
     var allTodos = this.navCategories();
     var completedTodos = this.navCategories(true);
 
-    this.$el.find('#all_todos').html(App.templates.nav_all({ items: allTodos, }));
-    this.$el.find('#completed_todos').html(App.templates.nav_complete({ items: completedTodos, }));
+    this.$('#all_todos').html(App.templates.nav_all({ items: allTodos, }));
+    this.$('#completed_todos').html(App.templates.nav_complete({ items: completedTodos, }));
 
     $("#all_todos p").eq(0).text(this.collection.length);
     $("#completed_todos p").eq(0).text(this.collection.getCompleted().length);
